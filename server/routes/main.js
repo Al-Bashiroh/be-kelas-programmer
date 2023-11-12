@@ -3,6 +3,11 @@ const router = express.Router();
 const Santri = require('../models/santri');
 
 // ROUTES
+router.get('/', async (req, res) => {
+    res.send({
+        name: "Hallow BROW"
+    });
+});
 router.get('/santri', async (req, res) => {
     const santries = await Santri.find();
     res.json(santries);

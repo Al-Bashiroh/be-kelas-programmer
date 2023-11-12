@@ -17,11 +17,11 @@ app.use(express.static('public'));
 // app.use('layout', './layouts/main');
 // app.set('view engine', 'ejs');
 
+// use router
 app.use('/', require('./server/routes/main'));
 
 // app.use('/', require('./server/routes/main'));
 
-
 app.listen(PORT, () => {
     console.log(`App is listening on port ${PORT}`);
-})
+});
