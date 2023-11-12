@@ -1,15 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const Santri = require('../models/santri');
 
 // ROUTES
-router.get('/', (req, res) => {
-    // res.send("Hello bro dari router");
-    // res.json({
-    //     "name": "putera"
-    // })
-    res.send({
-        "name": "putera"
-    })
+router.get('/santri', async (req, res) => {
+    const santries = await Santri.find();
+    res.json(santries);
 });
 
 module.exports = router;
