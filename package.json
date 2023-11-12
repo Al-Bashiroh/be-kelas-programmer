@@ -1,12 +1,11 @@
 {
   "name": "backend-tech-albashiroh",
   "version": "0.0.1",
+  "main": "index.js",
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "dev-netlify": "./node-modules/.bin/netlify-lambda serve src",
-    "build-netlify": "./node-modules/.bin/netlify-lambda build src",
-    "production": "pm2 start app.js --name \"tect-albashirohbackend\""
+    "build-netlify": "netlify deploy --prod"
   },
   "author": "Uda Putera",
   "dependencies": {
@@ -22,6 +21,7 @@
     "method-override": "^3.0.0",
     "mongodb": "^6.2.0",
     "mongoose": "^8.0.0",
+    "netlify-cli": "^17.2.2",
     "netlify-lambda": "^2.0.16",
     "serverless-http": "^3.2.0"
   },
