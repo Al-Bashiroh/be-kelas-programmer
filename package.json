@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "production": "pm2 start app.js --name \"tect-albashirohbackend\""
   },
   "author": "Uda Putera",
   "dependencies": {
