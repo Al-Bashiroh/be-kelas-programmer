@@ -23,12 +23,13 @@ app.use(express.static('public'));
 
 // use router
 // app.use('/', require('../server/routes/main'));
+// app.use('/', require('../server/routes/main'));
 app.use('/.netlify/functions/api', require('../server/routes/main'));
 
 // app.use('/', require('./server/routes/main'));
 
 if (!is_production) {
-    console.log('run on serverless production /functions/api');
+    console.log('run on serverless production src/api');
     module.exports.handler = serverless(app)
 } else {
     app.listen(PORT, () => {
