@@ -19,8 +19,7 @@ const connectDB = async () => {
                     version: ServerApiVersion.v1,
                     strict: true,
                     deprecationErrors: true,
-                },
-                tls: true
+                }
             });
 
             // Connect the client to the server	(optional starting in v4.7)
