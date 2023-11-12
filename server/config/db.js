@@ -12,6 +12,7 @@ const connectDB = async () => {
             const conn = await mongoose.connect(process.env.MONGODB_URI + database);
             console.log(`Database connected: ${conn.connection.host}`);
         } else if (is_production) {
+            console.log('load production db');
             // Create a MongoClient with a MongoClientOptions object to set the Stable API version
             const client = new MongoClient(process.env.MONGODB_PRODUCTION_URI, {
                 serverApi: {
