@@ -11,8 +11,6 @@ router.get('/', async (req, res) => {
 
 // GET SANTRI
 router.get('/santri', async (req, res) => {
-    console.log('get all santri data');
-
     try {
         const perPage = parseInt(req.query.perpage) || 10;
         const page = parseInt(req.query.page) || 1;
