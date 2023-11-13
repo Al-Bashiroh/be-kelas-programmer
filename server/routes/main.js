@@ -8,6 +8,8 @@ router.get('/', async (req, res) => {
         name: "Hallow BROW"
     });
 });
+
+// GET SANTRI
 router.get('/santri', async (req, res) => {
     const santries = await Santri.find();
     res.json(santries);
