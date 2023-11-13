@@ -40,10 +40,10 @@ const connectDB = async () => {
             statusCode: 500,
             body: error.toString()
         };
-    } finally {
-        if (is_production) {
-            await client.close();
-        }
+    // } finally {
+    //     if (is_production) {
+    //         await client.close();
+    //     }
     }
 };
 
