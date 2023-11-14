@@ -145,8 +145,9 @@ const after_login_or_register = (res, user) => {
     });
 };
 
-// USE AUTH MIDDLEWARE ON DASHBOARD
-router.post('/add_santri', authMiddleware, async (req, res) => {
+// USE AUTH MIDDLEWARE
+// ADD NEW SANTRI
+router.post('/santri', authMiddleware, async (req, res) => {
     try {
         const body = req.body;
         const newSantri = new Santri({
@@ -155,6 +156,29 @@ router.post('/add_santri', authMiddleware, async (req, res) => {
             gender: body.gender
         });
         const santri = await Santri.create(newSantri);
+
+        res.json({
+            message: "SUCCESS",
+            data: santri
+        });
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+// USE AUTH MIDDLEWARE
+// UPDATE SANTRI
+router.put('/santri', authMiddleware, async (req, res) => {
+    try {
+        const body = req.body;
+
+        // update and get the new saved data
+        const santri = await Santri.findByIdAndUpdate(body.id, {
+            firstname: body.firstname,
+            lastname: body.lastname,
+            gender: body.gender,
+            updatedAt: Date.now()
+        }, { new: true });
 
         res.json({
             message: "SUCCESS",
