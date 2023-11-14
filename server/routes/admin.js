@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 const User = require('../models/user');
+const Santri = require('../models/santri');
 
 const jwtSecret = process.env.JWT_SECRET;
 
@@ -145,10 +146,23 @@ const after_login_or_register = (res, user) => {
 };
 
 // USE AUTH MIDDLEWARE ON DASHBOARD
-router.get('/dashboard', authMiddleware, (req, res) => {
-    res.json({
-        message: "SUCCESS DASHBOARD"
-    })
+router.post('/add_santri', authMiddleware, async (req, res) => {
+    try {
+        const body = req.body;
+        const newSantri = new Santri({
+            firstname: body.firstname,
+            lastname: body.lastname,
+            gender: body.gender
+        });
+        const santri = await Santri.create(newSantri);
+
+        res.json({
+            message: "SUCCESS",
+            data: santri
+        });
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 module.exports = router;
