@@ -189,4 +189,20 @@ router.put('/santri', authMiddleware, async (req, res) => {
     }
 });
 
+// USE AUTH MIDDLEWARE
+// UPDATE SANTRI
+router.delete('/santri', authMiddleware, async (req, res) => {
+    try {
+        // 2 ways of delete
+        // await Santri.findByIdAndDelete(req.body.id);
+        await Santri.deleteOne({ _id: req.body.id })
+
+        res.json({
+            message: "SUCCESS"
+        });
+    } catch (error) {
+        console.log(error);
+    }
+});
+
 module.exports = router;
