@@ -11,10 +11,11 @@ const jwtSecret = process.env.JWT_SECRET;
 // CHECK AUTH
 const authMiddleware = (req, res, next) => {
     const token = req.cookies.token;
+    console.log(token);
 
     // set unauthorize
     if (!token) {
-        res.status(401).json({
+        return res.status(401).json({
             message: 'Unauthorize'
         });
     }
@@ -144,6 +145,18 @@ const after_login_or_register = (res, user) => {
         user
     });
 };
+
+// LOGOUT
+router.get('/logout', async (req, res) => {
+    try {
+        res.clearCookie('token');
+        res.json({
+            message: "Logout successful"
+        });
+    } catch (error) {
+        console.log(error);
+    }
+});
 
 // USE AUTH MIDDLEWARE
 // ADD NEW SANTRI
