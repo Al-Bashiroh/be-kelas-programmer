@@ -7,7 +7,28 @@ const User = require('../models/user');
 
 const jwtSecret = process.env.JWT_SECRET;
 
-// ROUTES
+// CHECK AUTH
+const authMiddleware = (req, res, next) => {
+    const token = req.cookies.token;
+
+    // set unauthorize
+    if (!token) {
+        res.status(401).json({
+            message: 'Unauthorize'
+        });
+    }
+
+    // check token
+    try {
+        const decoded = jwt.verify(token, jwtSecret);
+        req.userId = decoded.userId;
+        next();
+    } catch (error) {
+        res.status(401).json({
+            message: 'Unauthorize'
+        });
+    }
+}
 
 // GET USER
 router.get('/user', async (req, res) => {
@@ -49,17 +70,19 @@ router.post('/login', async (req, res) => {
             // LOGIN SUCCESS
             user = await User.findOne({ email }).select('-password');
 
-            // SET TOKEN
-            const token = jwt.sign({
-                userId: user._id
-            }, jwtSecret);
-            res.cookie('token', token,  { httpOnly: true });
+            after_login_or_register(res, user);
 
-            // Passwords match, login successful
-            res.json({
-                message: 'Login successful',
-                user
-            });
+            // // SET TOKEN
+            // const token = jwt.sign({
+            //     userId: user._id
+            // }, jwtSecret);
+            // res.cookie('token', token,  { httpOnly: true });
+
+            // // Passwords match, login successful
+            // res.json({
+            //     message: 'Login successful',
+            //     user
+            // });
         }
 
         // const data = await User.find();
@@ -90,12 +113,13 @@ router.post('/register', async (req, res) => {
 
         const user = await User.findOne({ email }).select('-password');
 
+        after_login_or_register(res, user);
 
-        // REDIRECT LOGIN
-        res.status(201).json({
-            message: 'User created',
-            user
-        });
+        // // REDIRECT LOGIN
+        // res.status(201).json({
+        //     message: 'User created',
+        //     user
+        // });
     } catch (error) {
         console.log("ERROR RRRRRRR BROOOOO");
         if (error.code == 11000) {
@@ -104,6 +128,27 @@ router.post('/register', async (req, res) => {
         res.status(500).json({ message: "Internal server error"});
         console.log(error);
     }
+});
+
+// SET AUTH AFTER SUCCESS LOGIN / REGISTER
+const after_login_or_register = (res, user) => {
+    const token = jwt.sign({
+        userId: user._id
+    }, jwtSecret);
+    res.cookie('token', token,  { httpOnly: true });
+
+    // Passwords match, login successful
+    res.json({
+        message: 'Login successful',
+        user
+    });
+};
+
+// USE AUTH MIDDLEWARE ON DASHBOARD
+router.get('/dashboard', authMiddleware, (req, res) => {
+    res.json({
+        message: "SUCCESS DASHBOARD"
+    })
 });
 
 module.exports = router;
