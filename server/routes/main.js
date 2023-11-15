@@ -60,4 +60,12 @@ router.get('/santri/:id', async (req, res) => {
     }
 });
 
+// 404
+router.get('/*', async (req, res) => {
+    res.status(404).json({
+        message: '404 Not Found'
+    });
+});
+
+
 module.exports = router;
