@@ -27,7 +27,17 @@ app.use(session({
         mongoUrl: process.env.MONGODB_URI
     }),
     // cookie: { maxAge: new Date( Date.now() + (3600000) ) }
-}))
+}));
+
+
+//
+app.use((req, res, next) => {
+    console.log('new request =>');
+    console.log('host: ' + req.hostname);
+    console.log('path: ' + req.path);
+    console.log('method: ' + req.method);
+    next();
+})
 
 // use router
 app.use('/', require('./server/routes/main'));
