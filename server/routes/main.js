@@ -1,16 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const mainController = require('../controllers/mainController');
-
-// ROUTES
-router.get('/', async (req, res) => {
-    res.send({
-        name: "Hallow BROW"
-    });
-});
+const santriController = require('../controllers/santriController');
 
 // SANTRI
-router.get('/santri', mainController.getSantri);
-router.get('/santri/:id', mainController.getSantriById);
+router.get('/santri', santriController.get);
+router.get('/santri/:id', santriController.getById);
 
 module.exports = router;
