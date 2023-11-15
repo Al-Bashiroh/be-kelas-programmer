@@ -38,6 +38,7 @@ app.use(session({
 // use router
 app.use('/', require('./server/routes/main'));
 app.use('/admin', require('./server/routes/admin'));
+app.use('/', require('./server/routes/error'));
 
 // app.use('/', require('./server/routes/main'));
 
