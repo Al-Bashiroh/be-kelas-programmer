@@ -33,7 +33,7 @@ const authMiddleware = (req, res, next) => {
 }
 
 // GET USER
-router.get('/user', async (req, res) => {
+router.get('/user', authMiddleware, async (req, res) => {
     try {
         const data = await User.find();
 
