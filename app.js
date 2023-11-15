@@ -4,7 +4,6 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const MongoStore = require('connect-mongo');
 const session = require('express-session');
-// const expressLayout = require('express-ejs-layouts');
 
 // connect Database
 const connectDB = require('./server/config/db');
@@ -30,17 +29,10 @@ app.use(session({
     // cookie: { maxAge: new Date( Date.now() + (3600000) ) }
 }))
 
-// templating engine
-// app.use(expressLayout);
-// app.use('layout', './layouts/main');
-// app.set('view engine', 'ejs');
-
 // use router
 app.use('/', require('./server/routes/main'));
 app.use('/admin', require('./server/routes/admin'));
 app.use('/', require('./server/routes/error'));
-
-// app.use('/', require('./server/routes/main'));
 
 app.listen(PORT, () => {
     console.log(`App is listening on port ${PORT}`);
