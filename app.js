@@ -33,7 +33,7 @@ var errorLogStream = rfs.createStream('error.log', {
 
 morgan.token('user', function getId (req) {
     const token = req.cookies.token;
-    console.log('token bro: ' + token);
+    // console.log('token bro: ' + token);
     if (token) {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         return decoded.userId;
@@ -66,7 +66,13 @@ app.use(session({
 // use router
 app.use('/', require('./server/routes/main'));
 app.use('/admin', require('./server/routes/admin'));
-app.use('/', require('./server/routes/error'));
+
+// 404 Not Found
+app.use((req, res) => {
+    res.status(404).json({
+        message: '404 Not Found'
+    });
+});
 
 app.listen(PORT, () => {
     console.log(`App is listening on port ${PORT}`);
