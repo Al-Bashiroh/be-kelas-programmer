@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const morgan = require('morgan');
 const User = require('../models/user');
+
 const jwtSecret = process.env.JWT_SECRET;
 
 const getUser = async (req, res) => {
@@ -39,7 +41,7 @@ const login = async (req, res) => {
             // LOGIN SUCCESS
             user = await User.findOne({ email }).select('-password');
 
-            after_login_or_register(res, user);
+            after_login_or_register(req, res, user);
         }
     } catch (error) {
         console.log(error);
@@ -63,7 +65,7 @@ const register = async (req, res) => {
 
         const user = await User.findOne({ email }).select('-password');
 
-        after_login_or_register(res, user);
+        after_login_or_register(req, res, user);
     } catch (error) {
         if (error.code == 11000) {
             res.status(409).json({ message: "Email already registered"});
@@ -74,13 +76,15 @@ const register = async (req, res) => {
 }
 
 // SET AUTH AFTER SUCCESS LOGIN / REGISTER
-const after_login_or_register = (res, user) => {
+const after_login_or_register = (req, res, user) => {
+    const userId = user._id;
     const token = jwt.sign({
-        userId: user._id
+        userId: userId
     }, jwtSecret);
     res.cookie('token', token,  { httpOnly: true });
 
-    // TODO: add new access log with user
+    // add user id to access log
+    morgan.token('user', () => userId);
 
     // Passwords match, login successful
     res.json({
@@ -91,7 +95,9 @@ const after_login_or_register = (res, user) => {
 
 const logout = async (req, res) => {
     try {
+        // clear token
         res.clearCookie('token');
+
         res.json({
             message: "Logout successful"
         });
