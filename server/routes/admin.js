@@ -1,50 +1,51 @@
 const express = require('express');
 const router = express.Router();
 
+const auth = require('../controllers/authController')
 const adminController = require('../controllers/adminController')
 const santriController = require('../controllers/santriController')
 
-const jwt = require('jsonwebtoken');
-const jwtSecret = process.env.JWT_SECRET;
+// const jwt = require('jsonwebtoken');
+// const jwtSecret = process.env.JWT_SECRET;
 
 // CHECK AUTH
-const authMiddleware = (req, res, next) => {
-    const token = req.cookies.token;
+// const authMiddleware = (req, res, next) => {
+//     const token = req.cookies.token;
 
-    // set unauthorize
-    if (!token) {
-        return res.status(401).json({
-            message: 'Unauthorize'
-        });
-    } else {
-        // update token max age
-        adminController.setToken(res, token)
-    }
+//     // set unauthorize
+//     if (!token) {
+//         return res.status(401).json({
+//             message: 'Unauthorize'
+//         });
+//     } else {
+//         // update token max age
+//         auth.setToken(res, token)
+//     }
 
-    // check token
-    try {
-        const decoded = jwt.verify(token, jwtSecret);
-        req.Id = decoded.Id;
-        next();
-    } catch (error) {
-        res.status(401).json({
-            message: 'Unauthorize'
-        });
-    }
-}
+//     // check token
+//     try {
+//         const decoded = jwt.verify(token, jwtSecret);
+//         req.Id = decoded.Id;
+//         next();
+//     } catch (error) {
+//         res.status(401).json({
+//             message: 'Unauthorize'
+//         });
+//     }
+// }
 
 // GET
-router.get('/user', authMiddleware, adminController.getUser);
+router.get('/user', auth.checkToken, adminController.getUser);
 
 // AUTH
-router.post('/login', adminController.login);
-router.post('/register', adminController.register);
-router.get('/logout', adminController.logout);
+router.post('/login', auth.login);
+router.post('/register', auth.register);
+router.get('/logout', auth.logout);
 
-// USE AUTH MIDDLEWARE
+// USE check token
 // SANTRI
-router.post('/santri', authMiddleware, santriController.create);
-router.put('/santri', authMiddleware, santriController.update);
-router.delete('/santri', authMiddleware, santriController.destroy);
+router.post('/santri', auth.checkToken, santriController.create);
+router.put('/santri', auth.checkToken, santriController.update);
+router.delete('/santri', auth.checkToken, santriController.destroy);
 
 module.exports = router;

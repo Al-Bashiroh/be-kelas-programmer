@@ -18,8 +18,6 @@ var errorLogStream = rfs.createStream('error.log', {
 
 function getUserId(req) {
     const token = req.cookies.token;
-    console.log(token + ' user id for morgan token');
-    // console.log('token bro: ' + token);
     if (token) {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         return decoded.userId;
