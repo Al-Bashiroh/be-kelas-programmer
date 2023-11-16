@@ -16,6 +16,9 @@ const authMiddleware = (req, res, next) => {
         return res.status(401).json({
             message: 'Unauthorize'
         });
+    } else {
+        // update token max age
+        adminController.setToken(res, token)
     }
 
     // check token

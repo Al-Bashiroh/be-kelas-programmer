@@ -81,7 +81,9 @@ const after_login_or_register = (req, res, user) => {
     const token = jwt.sign({
         userId: userId
     }, jwtSecret);
-    res.cookie('token', token,  { httpOnly: true });
+
+    // set token
+    setToken(res, token);
 
     // add user id to access log
     morgan.token('user', () => userId);
@@ -90,6 +92,16 @@ const after_login_or_register = (req, res, user) => {
     res.json({
         message: 'Login successful',
         user
+    });
+}
+
+// expire 1 day
+const maxAge = 24 * 60 * 60 * 1000;
+const setToken = (res, token) => {
+    console.log('set token <<<<<<<<<<<<<<')
+    res.cookie('token', token,  {
+        httpOnly: true,
+        maxAge: maxAge
     });
 }
 
@@ -110,5 +122,6 @@ module.exports = {
     getUser,
     login,
     register,
-    logout
+    logout,
+    setToken
 }

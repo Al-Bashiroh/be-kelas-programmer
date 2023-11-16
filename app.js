@@ -26,6 +26,14 @@ app.use(log.errorLogger);
 
 // cookie parser
 app.use(cookieParser());
+
+
+// TODO do we have to save session to database?
+// TODO what is the purpose of this session?
+// TODO what about if we only record token instead to database
+// save session to database
+// expire 1 day
+const maxAge = 24 * 60 * 60 * 1000
 app.use(session({
     secret: 'tech-albashiroh',
     resave: false,
@@ -33,8 +41,17 @@ app.use(session({
     store: MongoStore.create({
         mongoUrl: process.env.MONGODB_URI
     }),
-    // cookie: { maxAge: new Date( Date.now() + (3600000) ) }
+    // 10 seconds
+    cookie: { maxAge: maxAge }
 }));
+
+// // update session max age
+// app.use((req, res, next) => {
+//     if (req.session) {
+//         req.session.cookie.maxAge = maxAge;
+//     }
+//     next();
+// })
 
 // use router
 app.use('/', require('./server/routes/main'));
