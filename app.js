@@ -33,25 +33,17 @@ app.use(cookieParser());
 // TODO what about if we only record token instead to database
 // save session to database
 // expire 1 day
-const maxAge = 24 * 60 * 60 * 1000
-app.use(session({
-    secret: 'tech-albashiroh',
-    resave: false,
-    saveUninitialized: true,
-    store: MongoStore.create({
-        mongoUrl: process.env.MONGODB_URI
-    }),
-    // 10 seconds
-    cookie: { maxAge: maxAge }
-}));
-
-// // update session max age
-// app.use((req, res, next) => {
-//     if (req.session) {
-//         req.session.cookie.maxAge = maxAge;
-//     }
-//     next();
-// })
+// const maxAge = 24 * 60 * 60 * 1000
+// app.use(session({
+//     secret: 'tech-albashiroh',
+//     resave: false,
+//     saveUninitialized: true,
+//     store: MongoStore.create({
+//         mongoUrl: process.env.MONGODB_URI
+//     }),
+//     // 10 seconds
+//     cookie: { maxAge: maxAge }
+// }));
 
 // use router
 app.use('/', require('./server/routes/main'));
