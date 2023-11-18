@@ -29,6 +29,15 @@ app.use(log.errorLogger);
 app.use(cookieParser());
 
 
+// cors
+app.use(cors({
+    origin: ['http://localhost:3000', 'http://localhost:3001'],
+}));
+
+// cors allow all
+// app.use(cors());
+
+
 // TODO do we have to save session to database?
 // TODO what is the purpose of this session?
 // TODO what about if we only record token instead to database
@@ -49,12 +58,6 @@ app.use(cookieParser());
 // use router
 app.use('/', require('./server/routes/main'));
 app.use('/admin', require('./server/routes/admin'));
-
-// cors
-app.use(cors({
-    origin: ['http://localhost:3001'],
-    methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
-}))
 
 // 404 Not Found
 app.use((req, res) => {
