@@ -4,7 +4,8 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const MongoStore = require('connect-mongo');
 const session = require('express-session');
-const log = require('./server/controllers/logController')
+const log = require('./server/controllers/logController');
+const cors = require('cors');
 
 // connect Database
 const connectDB = require('./server/config/db');
@@ -48,6 +49,12 @@ app.use(cookieParser());
 // use router
 app.use('/', require('./server/routes/main'));
 app.use('/admin', require('./server/routes/admin'));
+
+// cors
+app.use(cors({
+    origin: ['http://localhost:3001'],
+    methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
+}))
 
 // 404 Not Found
 app.use((req, res) => {
