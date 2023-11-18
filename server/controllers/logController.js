@@ -1,3 +1,4 @@
+require('dotenv').config();
 const rfs = require('rotating-file-stream');
 const morgan = require('morgan');
 const path = require('path');
@@ -16,11 +17,17 @@ var errorLogStream = rfs.createStream('error.log', {
     path: path.join(__dirname, '../../log')
 });
 
-function getUserId(req) {
+function getUserId(req, res) {
     const token = req.cookies.token;
     if (token) {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        return decoded.userId;
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            return decoded.userId;
+        } catch (error) {
+            // TODO remove token if unauthorized
+            // res.clearCookie('token');
+            return '-';
+        }
     } else {
         return '-';
     }
