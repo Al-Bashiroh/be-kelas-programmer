@@ -111,6 +111,8 @@ const setToken = (res, token) => {
 // CHECK TOKEN
 const checkToken = (req, res, next) => {
     const token = req.cookies.token;
+    console.log('checkAuth <<<<<<<<<<<<<<<');
+    console.log(token);
 
     // set unauthorize
     if (!token) {
@@ -125,7 +127,10 @@ const checkToken = (req, res, next) => {
     // check token
     try {
         const decoded = jwt.verify(token, jwtSecret);
-        req.Id = decoded.Id;
+
+        // TODO wat is this for? decoded.Id is undefined. available is decoded.userId
+        // req.Id = decoded.Id;
+        // req.userId = decoded.userId; //new
         next();
     } catch (error) {
         res.status(401).json({
@@ -134,10 +139,30 @@ const checkToken = (req, res, next) => {
     }
 }
 
+const checkAuth = async (req, res) => {
+    try {
+
+        const token = req.cookies.token;
+        const decoded = jwt.verify(token, jwtSecret);
+        console.log('decoded <<<<<<<<');
+        console.log(decoded);
+        const _id = decoded.userId;
+        console.log(_id);
+
+        const user = await User.findOne({ _id }).select('-password');
+        // console.log(user);
+        res.json({ user });
+    } catch (error) {
+        console.log(error)
+    }
+
+}
+
 module.exports = {
     login,
     register,
     logout,
     setToken,
-    checkToken
+    checkToken,
+    checkAuth
 }

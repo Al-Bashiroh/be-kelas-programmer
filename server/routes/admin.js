@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const auth = require('../controllers/authController')
+const authController = require('../controllers/authController')
 const adminController = require('../controllers/adminController')
 const santriController = require('../controllers/santriController')
 
@@ -41,6 +42,7 @@ router.get('/user', auth.checkToken, adminController.getUser);
 router.post('/login', auth.login);
 router.post('/register', auth.register);
 router.get('/logout', auth.logout);
+router.get('/checkAuth', auth.checkToken, authController.checkAuth);
 
 // USE check token
 // SANTRI
