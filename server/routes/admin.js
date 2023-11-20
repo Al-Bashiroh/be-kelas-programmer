@@ -46,6 +46,8 @@ router.get('/checkAuth', auth.checkToken, authController.checkAuth);
 
 // USE check token
 // SANTRI
+router.get('/santri', auth.checkToken, santriController.get);
+router.get('/santri/:id', auth.checkToken, santriController.getById);
 router.post('/santri', auth.checkToken, santriController.create);
 router.put('/santri', auth.checkToken, santriController.update);
 router.delete('/santri', auth.checkToken, santriController.destroy);

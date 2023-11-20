@@ -70,10 +70,11 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
     try {
+        const _id = req.body._id;
         const body = req.body;
 
         // update and get the new saved data
-        const santri = await Santri.findByIdAndUpdate(body.id, {
+        const santri = await Santri.findByIdAndUpdate(_id, {
             firstname: body.firstname,
             lastname: body.lastname,
             gender: body.gender,
@@ -91,9 +92,11 @@ const update = async (req, res) => {
 
 const destroy = async (req, res) => {
     try {
+        const _id = req.body._id;
+
         // 2 ways of delete
         // await Santri.findByIdAndDelete(req.body.id);
-        await Santri.deleteOne({ _id: req.body.id })
+        await Santri.deleteOne({ _id })
 
         res.json({
             message: "SUCCESS"
