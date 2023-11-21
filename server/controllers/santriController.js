@@ -36,9 +36,9 @@ const get = async (req, res) => {
 
 const getById = async (req, res) => {
     try {
-        const id = req.params.id;
+        const _id = req.params._id;
 
-        const data = await Santri.findById(id);
+        const data = await Santri.findById(_id);
 
         res.json({
             data
