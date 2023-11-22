@@ -6,6 +6,7 @@ const authController = require('../controllers/authController')
 const adminController = require('../controllers/adminController')
 const santriController = require('../controllers/santriController')
 const projectController = require('../controllers/projectController')
+const courseController = require('../controllers/courseController')
 
 // const jwt = require('jsonwebtoken');
 // const jwtSecret = process.env.JWT_SECRET;
@@ -54,11 +55,15 @@ router.put('/santri', auth.checkToken, santriController.update);
 router.delete('/santri', auth.checkToken, santriController.destroy);
 
 // USE check token
-// SANTRI
+// PROJECT
 router.get('/project', auth.checkToken, projectController.get);
 router.get('/project/:id', auth.checkToken, projectController.getById);
 router.post('/project', auth.checkToken, projectController.create);
 router.put('/project', auth.checkToken, projectController.update);
 router.delete('/project', auth.checkToken, projectController.destroy);
+
+// USE check token
+// COURSE
+router.get('/course', auth.checkToken, courseController.get);
 
 module.exports = router;

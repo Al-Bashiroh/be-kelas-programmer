@@ -22,7 +22,23 @@ const get = async (req, res) => {
                     from: 'courses', // Assuming the collection name is 'users'
                     localField: 'courses',
                     foreignField: '_id',
+                    pipeline: [
+                        {
+                            $sort: { name: 1 } // Sort by name alphabetically
+                        }
+                    ],
                     as: 'courses'
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    title: 1,
+                    date: 1,
+                    url: 1,
+                    responsive: 1,
+                    contributors: 1,
+                    courses: '$courses.name' // Extract only the 'name' field from 'coursesData',
                 }
             },
             { $skip: perPage * page - perPage },
@@ -70,25 +86,24 @@ const getById = async (req, res) => {
 const create = async (req, res) => {
     try {
         const body = req.body;
-        console.log(body)
 
         // get santries id by fecth to make sure santri is exist
         const contributorIds = body.contributors;
-        
+
         const santris = await Santri.find({ _id: { $in: contributorIds } });
         const contributors = santris.map(s => s._id);
-        
+
         // get courses by name or create new one if not exist
         const courseNames = body.courses;
         const courses = await Promise.all(
             courseNames.map(async courseName => {
                 const course = await Course.findOneAndUpdate(
-                    { name: courseName },
-                    { $setOnInsert: { name: courseName } },
+                    { name: courseName.toUpperCase() },
+                    { $setOnInsert: { name: courseName.toUpperCase() } },
                     { upsert: true, new: true }
                 );
-    
-                return course._id;  
+
+                return course._id;
             })
         );
 
@@ -112,10 +127,63 @@ const create = async (req, res) => {
 }
 
 const update = async (req, res) => {
+    try {
+        const _id = req.body._id;
+        const body = req.body;
 
+        // get santries id by fecth to make sure santri is exist
+        const contributorIds = body.contributors;
+
+        const santris = await Santri.find({ _id: { $in: contributorIds } });
+        const contributors = santris.map(s => s._id);
+
+        // get courses by name or create new one if not exist
+        const courseNames = body.courses;
+        const courses = await Promise.all(
+            courseNames.map(async courseName => {
+                const course = await Course.findOneAndUpdate(
+                    { name: courseName.toUpperCase() },
+                    { $setOnInsert: { name: courseName.toUpperCase() } },
+                    { upsert: true, new: true }
+                );
+
+                return course._id;
+            })
+        );
+
+        // update and get the new saved data
+        const project = await Project.findByIdAndUpdate(_id, {
+            title: body.title,
+            url: body.url,
+            responsive: body.responsive,
+            date: new Date(body.date),
+            contributors: contributors,
+            courses: courses,
+            updatedAt: Date.now()
+        }, { new: true });
+
+        res.json({
+            message: "SUCCESS",
+            data: project
+        });
+    } catch (error) {
+        console.log(error);
+    }
 }
 const destroy = async (req, res) => {
+    try {
+        const _id = req.body._id;
 
+        // 2 ways of delete
+        // await Santri.findByIdAndDelete(req.body.id);
+        await Project.deleteOne({ _id })
+
+        res.json({
+            message: "SUCCESS"
+        });
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 module.exports = {
