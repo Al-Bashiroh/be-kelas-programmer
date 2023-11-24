@@ -9,7 +9,6 @@ const cors = require('cors');
 
 // connect Database
 const connectDB = require('./server/config/db');
-connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -67,6 +66,8 @@ app.use((req, res) => {
     });
 });
 
-app.listen(PORT, () => {
-    console.log(`App is listening on port ${PORT}`);
-});
+connectDB().then(() => {
+    app.listen(PORT, () => {
+        console.log(`App is listening on port ${PORT}`);
+    });
+})
