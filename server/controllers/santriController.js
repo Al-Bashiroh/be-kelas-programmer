@@ -1,5 +1,4 @@
 const Santri = require('../models/santri');
-// const flickr = require('../config/flickr')
 
 const get = async (req, res) => {
     try {
@@ -20,13 +19,8 @@ const get = async (req, res) => {
         const to = data.length ? from + data.length - 1 : 0;
         const maxPage = Math.ceil(count / perPage);
 
-        // const photo = await flickr("flickr.photos.getInfo", {
-        //     photo_id: '53351486615',
-        // })
-
         res.json({
             data,
-            // photo,
             currentPage: page,
             prevPage: page != 1 ? page - 1 : null,
             nextPage: hasNextPage ? nextPage : null,
@@ -78,6 +72,15 @@ const update = async (req, res) => {
     try {
         const _id = req.body._id;
         const body = req.body;
+
+        // if (req.body.photo) {
+        //     const photo = req.body.photo;
+        //     const base64Data = photo.replace(/^data:image\/jpeg;base64,/, '');
+        //     const binaryData = Buffer.from(base64Data, 'base64');
+
+            // TODO
+            // DO REST UPLOAD PHOTO HERE
+        // }
 
         // update and get the new saved data
         const santri = await Santri.findByIdAndUpdate(_id, {
