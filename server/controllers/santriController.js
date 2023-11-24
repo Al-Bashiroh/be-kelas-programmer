@@ -1,4 +1,5 @@
 const Santri = require('../models/santri');
+// const flickr = require('../config/flickr')
 
 const get = async (req, res) => {
     try {
@@ -19,8 +20,13 @@ const get = async (req, res) => {
         const to = data.length ? from + data.length - 1 : 0;
         const maxPage = Math.ceil(count / perPage);
 
+        // const photo = await flickr("flickr.photos.getInfo", {
+        //     photo_id: '53351486615',
+        // })
+
         res.json({
             data,
+            // photo,
             currentPage: page,
             prevPage: page != 1 ? page - 1 : null,
             nextPage: hasNextPage ? nextPage : null,
