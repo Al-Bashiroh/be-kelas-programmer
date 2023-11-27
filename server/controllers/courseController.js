@@ -2,9 +2,11 @@ const Course = require('../models/course');
 
 const get = async (req, res) => {
     try {
-        const data = await Course.find()
+        var data = await Course.find()
             .sort({ name: 1 })
             .exec();
+
+        data = data.map(c => c.name)
 
         res.json({
             data
