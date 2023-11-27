@@ -8,7 +8,7 @@ const get = async (req, res) => {
         const page = parseInt(req.query.page) || 1;
 
         const data = await Project.aggregate([
-            { $sort: { date: 1 }},
+            { $sort: { date: -1 }},
             {
                 $lookup: {
                     from: 'santris', // Assuming the collection name is 'users'
@@ -41,8 +41,8 @@ const get = async (req, res) => {
                     courses: '$courses.name' // Extract only the 'name' field from 'coursesData',
                 }
             },
-            { $skip: perPage * page - perPage },
-            { $limit: perPage }
+            // { $skip: perPage * page - perPage },
+            // { $limit: perPage }
         ]);
 
         const count = await Project.countDocuments();
