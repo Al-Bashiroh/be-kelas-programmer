@@ -55,7 +55,8 @@ const create = async (req, res) => {
         const newSantri = new Santri({
             firstname: body.firstname,
             lastname: body.lastname,
-            gender: body.gender
+            gender: body.gender,
+            join_date: new Date(body.join_date)
         });
         const santri = await Santri.create(newSantri);
 
@@ -87,6 +88,7 @@ const update = async (req, res) => {
             firstname: body.firstname,
             lastname: body.lastname,
             gender: body.gender,
+            join_date: new Date(body.join_date),
             updatedAt: Date.now()
         }, { new: true });
 

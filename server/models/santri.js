@@ -14,6 +14,13 @@ const SantriSchema = new Schema({
         type: String,
         required: true
     },
+    join_date: {
+        type: Date,
+        require: true,
+        default: function() {
+            return new Date().setHours(0, 0, 0, 0);
+        }
+    },
     createdAt: {
         type: Date,
         default: Date.now()
