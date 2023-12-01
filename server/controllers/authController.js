@@ -111,8 +111,8 @@ const setToken = (res, token) => {
 // CHECK TOKEN
 const checkToken = (req, res, next) => {
     const token = req.cookies.token;
-    console.log('checkAuth <<<<<<<<<<<<<<<');
-    console.log(token);
+    // console.log('checkAuth <<<<<<<<<<<<<<<');
+    // console.log(token);
 
     // set unauthorize
     if (!token) {

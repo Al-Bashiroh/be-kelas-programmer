@@ -18,7 +18,7 @@ const SantriSchema = new Schema({
         type: Date,
         require: true,
         default: function() {
-            return new Date().setHours(0, 0, 0, 0);
+            return new Date().setUTCHours(0, 0, 0, 0);
         }
     },
     createdAt: {
