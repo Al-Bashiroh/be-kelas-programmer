@@ -29,10 +29,19 @@ app.use(cookieParser());
 
 
 // cors
-app.use(cors({
-    origin: ['http://localhost:3000', 'http://localhost:3001'],
-    credentials: true
-}));
+if (process.env.APP_ENV == 'local') {
+
+    app.use(cors({
+        origin: ['http://localhost:3000', 'http://localhost:3001'],
+        credentials: true
+    }));
+} else if (process.env.APP_ENV == 'production') {
+    app.use(cors({
+        origin: [process.env.APP_WEB_URL],
+        credentials: true
+    }));
+}
+
 
 // cors allow all
 // app.use(cors());
