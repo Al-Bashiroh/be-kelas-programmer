@@ -7,31 +7,31 @@ const database = process.env.MONGO_DATABASE || 'test';
 
 const connectDB = async () => {
     try {
-        if (is_local) {
+        // if (is_local) {
             console.log('load development db');
             mongoose.set('strictQuery', false);
             const conn = await mongoose.connect(process.env.MONGODB_URI + database);
             console.log(`Database connected: ${conn.connection.host}`);
-        } else if (is_production) {
-            // Create a MongoClient with a MongoClientOptions object to set the Stable API version
-            const client = new MongoClient(process.env.MONGODB_PRODUCTION_URI, {
-                serverApi: {
-                    version: ServerApiVersion.v1,
-                    strict: true,
-                    deprecationErrors: true,
-                }
-            });
-            console.log('load production db');
+        // } else if (is_production) {
+        //     // Create a MongoClient with a MongoClientOptions object to set the Stable API version
+        //     const client = new MongoClient(process.env.MONGODB_PRODUCTION_URI, {
+        //         serverApi: {
+        //             version: ServerApiVersion.v1,
+        //             strict: true,
+        //             deprecationErrors: true,
+        //         }
+        //     });
+        //     console.log('load production db');
 
-            // Connect the client to the server	(optional starting in v4.7)
-            await client.connect();
-            // Send a ping to confirm a successful connection
-            await client.db(process.env.MONGO_DATABASE).command({ ping: 1 });
-            console.log("Pinged your deployment. You successfully connected to MongoDB!");
+        //     // Connect the client to the server	(optional starting in v4.7)
+        //     await client.connect();
+        //     // Send a ping to confirm a successful connection
+        //     await client.db(process.env.MONGO_DATABASE).command({ ping: 1 });
+        //     console.log("Pinged your deployment. You successfully connected to MongoDB!");
 
-        } else {
-            throw new Error('The build is not in production');
-        }
+        // } else {
+        //     throw new Error('The build is not in production');
+        // }
     } catch (error) {
         console.log("Database failed to connect")
         console.log(error);
