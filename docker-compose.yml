@@ -1,6 +1,7 @@
 version: "3.8"
 services:
   api:
+    image: express/be-kelas-programmer:1.0.0
     build: .
     container_name: be-kp
     ports:
