@@ -64,7 +64,8 @@ const register = async (req, res) => {
 
 // SET AUTH AFTER SUCCESS LOGIN / REGISTER
 const after_login_or_register = (req, res, user) => {
-    const userId = user._id;
+    // destructur with custom varible name
+    const { _id:userId } = user;
     const token = jwt.sign({
         userId: userId
     }, jwtSecret);
