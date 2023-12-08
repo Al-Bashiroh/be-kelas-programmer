@@ -7,8 +7,8 @@ const jwtSecret = process.env.JWT_SECRET;
 
 const login = async (req, res) => {
     try {
-        const email = req.body.email;
-        const password = req.body.password;
+        // destructuring
+        const {email, password} = req.body;
 
         var user = await User.findOne({ email });
 
@@ -38,9 +38,8 @@ const login = async (req, res) => {
 
 const register = async (req, res) => {
     try {
-        const name = req.body.name;
-        const email = req.body.email;
-        const password = req.body.password;
+        // destructuring
+        const {name, email, password} = req.body;
 
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
